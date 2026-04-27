@@ -24,6 +24,7 @@ Set these environment variables in Render:
 - `BCRYPT_SALT_ROUNDS=12`
 - `FRONTEND_URL=https://<your-vercel-domain>`
 - `CORS_ORIGIN=https://<your-vercel-domain>`
+- For Vercel preview deployments, add the exact preview URL as well.
 - `COOKIE_SAME_SITE=none`
 - `COOKIE_SECURE=true`
 

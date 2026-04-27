@@ -1,10 +1,10 @@
 require('dotenv').config({ override: true });
 
 const express = require('express');
-const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const connectDB = require('./config/db');
 const mongoose = require('mongoose');
+const corsMiddleware = require('./middleware/cors');
 const errorHandler = require('./middleware/errorHandler');
 const { logger } = require('./utils/logger');
 const authRoutes = require('./routes/authRoutes');
@@ -16,15 +16,7 @@ const port = Number(process.env.PORT) || 5000;
 
 app.disable('x-powered-by');
 
-const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
-app.use(
-  cors({
-    origin: clientUrl,
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-  })
-);
+app.use(corsMiddleware);
 app.use(cookieParser());
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true }));
