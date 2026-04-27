@@ -4,7 +4,11 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 Set the project root to `frontend` and configure this environment variable:
 
-- `NEXT_PUBLIC_API_BASE_URL=https://<your-render-backend-domain>`
+- `BACKEND_URL=https://<your-render-backend-domain>`
+
+Optional (defaults are already correct in this project):
+
+- `NEXT_PUBLIC_API_BASE_URL=/api`
 
 After deployment, put your Vercel domain in backend Render env vars:
 

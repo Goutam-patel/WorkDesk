@@ -1,9 +1,10 @@
 import axios from 'axios';
 
 const ACCESS_TOKEN_KEY = 'workdesk_access_token';
+const apiBaseUrl = (process.env.NEXT_PUBLIC_API_BASE_URL || '/api').trim();
 
 const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000',
+  baseURL: apiBaseUrl,
   timeout: 10000,
   withCredentials: true,
   headers: {
