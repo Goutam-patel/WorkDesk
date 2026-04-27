@@ -1,5 +1,16 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Deploying On Vercel
+
+Set the project root to `frontend` and configure this environment variable:
+
+- `NEXT_PUBLIC_API_BASE_URL=https://<your-render-backend-domain>`
+
+After deployment, put your Vercel domain in backend Render env vars:
+
+- `FRONTEND_URL=https://<your-vercel-domain>`
+- `CORS_ORIGIN=https://<your-vercel-domain>`
+
 ## Getting Started
 
 First, run the development server:

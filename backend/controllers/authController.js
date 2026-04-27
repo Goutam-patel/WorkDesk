@@ -11,6 +11,36 @@ const { hashPassword, comparePassword } = require('../utils/passwordUtils');
 
 const REFRESH_COOKIE_NAME = 'workdesk_rt';
 
+function toBoolean(value) {
+  if (typeof value !== 'string') {
+    return null;
+  }
+
+  const normalized = value.trim().toLowerCase();
+  if (normalized === 'true') {
+    return true;
+  }
+  if (normalized === 'false') {
+    return false;
+  }
+
+  return null;
+}
+
+function resolveCookiePolicy() {
+  const isProduction = process.env.NODE_ENV === 'production';
+  const allowedSameSite = ['strict', 'lax', 'none'];
+  const envSameSite = (process.env.COOKIE_SAME_SITE || '').trim().toLowerCase();
+  const sameSite = allowedSameSite.includes(envSameSite) ? envSameSite : isProduction ? 'none' : 'lax';
+  const secureOverride = toBoolean(process.env.COOKIE_SECURE);
+  const secure = secureOverride === null ? isProduction : secureOverride;
+
+  return {
+    sameSite,
+    secure: sameSite === 'none' ? true : secure
+  };
+}
+
 function getRefreshTtlMs(rememberMe) {
   if (rememberMe) {
     return 1000 * 60 * 60 * 24 * 30;
@@ -19,20 +49,24 @@ function getRefreshTtlMs(rememberMe) {
 }
 
 function getCookieOptions(maxAge) {
+  const cookiePolicy = resolveCookiePolicy();
+
   return {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    secure: cookiePolicy.secure,
+    sameSite: cookiePolicy.sameSite,
     path: '/',
     maxAge
   };
 }
 
 function clearRefreshCookie(res) {
+  const cookiePolicy = resolveCookiePolicy();
+
   res.clearCookie(REFRESH_COOKIE_NAME, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    secure: cookiePolicy.secure,
+    sameSite: cookiePolicy.sameSite,
     path: '/'
   });
 }
