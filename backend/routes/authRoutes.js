@@ -2,7 +2,7 @@ const express = require('express');
 const { body } = require('express-validator');
 const authMiddleware = require('../middleware/auth');
 const { validate } = require('../middleware/validation');
-const { register, login, refresh, logout, me } = require('../controllers/authController');
+const { register, login, refresh, logout, me, debugCookies } = require('../controllers/authController');
 
 const router = express.Router();
 
@@ -30,5 +30,10 @@ router.post('/refresh', refresh);
 router.post('/logout', logout);
 
 router.get('/me', authMiddleware, me);
+
+// Debug route to inspect cookies from the browser. Enable by setting DEBUG_COOKIE=true in env.
+if (process.env.DEBUG_COOKIE === 'true') {
+  router.get('/debug-cookies', debugCookies);
+}
 
 module.exports = router;

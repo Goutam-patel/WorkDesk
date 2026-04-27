@@ -284,10 +284,28 @@ async function me(req, res) {
   });
 }
 
+async function debugCookies(req, res) {
+  // Expose cookies and some request metadata for debugging only when enabled via env
+  if (process.env.DEBUG_COOKIE !== 'true') {
+    return res.status(404).json({ success: false, message: 'Not found' });
+  }
+
+  return res.status(200).json({
+    success: true,
+    cookies: req.cookies || {},
+    headers: {
+      origin: req.headers.origin,
+      referer: req.headers.referer,
+      host: req.headers.host
+    }
+  });
+}
+
 module.exports = {
   register,
   login,
   refresh,
   logout,
-  me
+  me,
+  debugCookies
 };
