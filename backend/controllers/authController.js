@@ -11,6 +11,14 @@ const { hashPassword, comparePassword } = require('../utils/passwordUtils');
 
 const REFRESH_COOKIE_NAME = 'workdesk_rt';
 
+function isSecureCrossSiteDeployment() {
+  const deploymentOrigins = [process.env.FRONTEND_URL, process.env.CORS_ORIGIN, process.env.CLIENT_URL]
+    .filter(Boolean)
+    .map((origin) => origin.trim().toLowerCase());
+
+  return deploymentOrigins.some((origin) => origin.startsWith('https://') && !origin.includes('localhost'));
+}
+
 function toBoolean(value) {
   if (typeof value !== 'string') {
     return null;
@@ -29,11 +37,16 @@ function toBoolean(value) {
 
 function resolveCookiePolicy() {
   const isProduction = process.env.NODE_ENV === 'production';
+  const isCrossSiteDeployment = isSecureCrossSiteDeployment();
   const allowedSameSite = ['strict', 'lax', 'none'];
   const envSameSite = (process.env.COOKIE_SAME_SITE || '').trim().toLowerCase();
-  const sameSite = allowedSameSite.includes(envSameSite) ? envSameSite : isProduction ? 'none' : 'lax';
+  const sameSite = allowedSameSite.includes(envSameSite)
+    ? envSameSite
+    : isCrossSiteDeployment || isProduction
+      ? 'none'
+      : 'lax';
   const secureOverride = toBoolean(process.env.COOKIE_SECURE);
-  const secure = secureOverride === null ? isProduction : secureOverride;
+  const secure = secureOverride === null ? isCrossSiteDeployment || isProduction : secureOverride;
 
   return {
     sameSite,
