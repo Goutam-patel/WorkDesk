@@ -1,0 +1,251 @@
+@import "tailwindcss";
+
+:root {
+  --background: #081624;
+  --foreground: #f5f8fc;
+  --surface: rgba(11, 30, 46, 0.78);
+  --surface-strong: #0f2940;
+  --surface-border: rgba(146, 180, 214, 0.22);
+  --brand: #ff7a1a;
+  --brand-strong: #f3542b;
+  --brand-soft: rgba(255, 122, 26, 0.2);
+  --ring: rgba(255, 122, 26, 0.4);
+  --gradient-a: rgba(255, 122, 26, 0.2);
+  --gradient-b: rgba(36, 200, 219, 0.16);
+  --gradient-c: rgba(245, 84, 43, 0.14);
+  --muted: #9bb0c8;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+}
+
+[data-theme='light'] {
+  --background: #f5f7fb;
+  --foreground: #132438;
+  --surface: rgba(255, 255, 255, 0.9);
+  --surface-strong: #ffffff;
+  --surface-border: rgba(102, 128, 156, 0.24);
+  --brand: #ec5a2b;
+  --brand-strong: #d34124;
+  --brand-soft: rgba(236, 90, 43, 0.1);
+  --ring: rgba(236, 90, 43, 0.3);
+  --gradient-a: rgba(236, 90, 43, 0.1);
+  --gradient-b: rgba(34, 197, 214, 0.1);
+  --gradient-c: rgba(255, 199, 112, 0.32);
+  --muted: #5c7088;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), system-ui, sans-serif;
+  min-height: 100vh;
+  font-feature-settings: 'rlig' 1, 'calt' 1;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(circle at 12% 8%, var(--gradient-a), transparent 36%),
+    radial-gradient(circle at 88% 12%, var(--gradient-c), transparent 31%),
+    radial-gradient(circle at 48% 92%, var(--gradient-b), transparent 30%),
+    linear-gradient(162deg, #04101d 0%, var(--background) 54%, #040e1a 100%);
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image:
+    radial-gradient(rgba(159, 182, 206, 0.2) 0.6px, transparent 0.6px),
+    linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+  background-size: 3px 3px, 36px 36px, 36px 36px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+.shell {
+  @apply mx-auto w-full max-w-[96rem] px-4 md:px-6;
+}
+
+.glass {
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  box-shadow: 0 24px 56px -30px rgba(0, 0, 0, 0.78);
+}
+
+.surface-strong {
+  background: var(--surface-strong);
+  border: 1px solid var(--surface-border);
+}
+
+.gradient-primary {
+  background: linear-gradient(135deg, #ff7a1a 0%, #24c8db 100%);
+}
+
+.gradient-surface {
+  background: linear-gradient(135deg, rgba(255, 122, 26, 0.1) 0%, rgba(36, 200, 219, 0.1) 100%);
+}
+
+.gradient-hover {
+  background: linear-gradient(135deg, rgba(255, 122, 26, 0.16) 0%, rgba(36, 200, 219, 0.16) 100%);
+}
+
+.glow-primary {
+  box-shadow: 0 0 24px rgba(255, 122, 26, 0.38), 0 0 44px rgba(36, 200, 219, 0.2);
+}
+
+.transition-smooth {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.34);
+  border-radius: 9999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.48);
+}
+
+.focus-ring {
+  outline: none;
+  box-shadow: 0 0 0 4px var(--ring);
+}
+
+.page-enter {
+  animation: fade-in-up 420ms ease-out both;
+}
+
+.section-stagger > * {
+  animation: fade-in-up 450ms ease-out both;
+}
+
+.section-stagger > *:nth-child(2) {
+  animation-delay: 70ms;
+}
+
+.section-stagger > *:nth-child(3) {
+  animation-delay: 120ms;
+}
+
+.text-muted {
+  color: var(--muted);
+}
+
+.brand-chip {
+  background: linear-gradient(140deg, rgba(255, 122, 26, 0.16), rgba(36, 200, 219, 0.12));
+  border: 1px solid var(--surface-border);
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.animate-slideInFromRight {
+  animation: slideInFromRight 0.3s ease-out;
+}
+
+.animate-slideInFromBottom {
+  animation: slideInFromBottom 0.3s ease-out;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 420ms ease-out both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromBottom {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+::selection {
+  background: rgba(255, 122, 26, 0.28);
+  color: #fff;
+}
